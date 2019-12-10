@@ -1,5 +1,5 @@
-flask-lambda-python3.6
-======================
+flask-lambda-python3.6-lb
+=========================
 
 **Python 3.6+ Only**
 --------------------
@@ -7,7 +7,7 @@ flask-lambda-python3.6
 
 Installation
 ------------
-
+pip install flask-lambda-python3.6-lb
 
 Usage
 -----
