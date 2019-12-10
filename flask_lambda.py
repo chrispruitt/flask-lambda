@@ -57,7 +57,7 @@ def make_environ(event):
     environ['PATH_INFO'] = event['path']
     environ['QUERY_STRING'] = urlencode(qs) if qs else ''
 
-    environ['REMOTE_ADDR'] = event['headers']['X-Forwarded-For']
+    environ['REMOTE_ADDR'] = environ.get('X_FORWARDED_FOR')
 
     environ['HOST'] = '{}:{}'.format(
         environ.get('HTTP_HOST', ''),
