@@ -1,20 +1,12 @@
 flask-lambda-python3.6
-============
+======================
 
 **Python 3.6+ Only**
----------------
-
-For older versions of python use the original flask-lambda library which this code is adapted from:
-https://github.com/sivel/flask-lambda
-
-See this example flask project for how to use and deploy a flask app using this library:
-https://github.com/techjacker/flask-lambda-example
+--------------------
 
 
 Installation
 ------------
-
-pip install flask-lambda-python36
 
 
 Usage
