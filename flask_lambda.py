@@ -16,6 +16,7 @@
 
 import sys
 import logging
+import traceback
 
 try:
     from urllib import urlencode
@@ -125,7 +126,8 @@ class FlaskLambda(Flask):
             }
 
         except Exception as e:
-            logging.error('unexpected error', e)
+            logging.error('unexpected error: "{}"'.format(e))
+            traceback.print_exc()
             return {
                 'statusCode': 500,
                 'headers': {},
