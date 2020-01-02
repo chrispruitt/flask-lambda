@@ -117,13 +117,16 @@ class FlaskLambda(Flask):
             body = next(self.wsgi_app(
                 make_environ(event),
                 response.start_response
-            ))
+            ), None)
 
-            return {
+            response = {
                 'statusCode': response.status,
-                'headers': response.response_headers,
-                'body': body.decode('utf-8')
+                'headers': response.response_headers
             }
+            if body is not None:
+                response['body'] = body.decode('utf-8')
+
+            return response
 
         except Exception as e:
             logging.error('unexpected error: "{}"'.format(e))
