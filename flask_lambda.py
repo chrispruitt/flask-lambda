@@ -15,6 +15,9 @@
 #    under the License.
 
 import sys
+import logging
+import traceback
+import os
 
 try:
     from urllib import urlencode
@@ -38,12 +41,13 @@ except ImportError:
 
 from werkzeug.wrappers import BaseRequest
 
-__version__ = '0.0.5'
-
 
 def make_environ(event):
     environ = {}
-    print('event', event)
+
+    if os.environ.get("LOG_LEVEL") == "DEBUG":
+        print('event: "{}"'.format(event))
+
     # key might be there but set to None
     headers = event.get('headers', {}) or {}
     for hdr_name, hdr_value in headers.items():
@@ -109,28 +113,32 @@ class FlaskLambda(Flask):
     def __call__(self, event, context):
         try:
             if 'httpMethod' not in event:
-                print('call as flask app')
+                logging.debug('call as flask app')
                 # In this "context" `event` is `environ` and
                 # `context` is `start_response`, meaning the request didn't
                 # occur via API Gateway and Lambda
                 return super(FlaskLambda, self).__call__(event, context)
 
-            print('call as aws lambda')
+            logging.debug('call as aws lambda')
             response = LambdaResponse()
 
             body = next(self.wsgi_app(
                 make_environ(event),
                 response.start_response
-            ))
+            ), None)
 
-            return {
+            response = {
                 'statusCode': response.status,
-                'headers': response.response_headers,
-                'body': body.decode('utf-8')
+                'headers': response.response_headers
             }
+            if body is not None:
+                response['body'] = body.decode('utf-8')
+
+            return response
 
         except Exception as e:
-            print('unexpected error', e)
+            logging.error('unexpected error: "{}"'.format(e))
+            traceback.print_exc()
             return {
                 'statusCode': 500,
                 'headers': {},
