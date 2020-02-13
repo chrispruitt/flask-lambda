@@ -21,6 +21,11 @@ try:
 except ImportError:
     from urllib.parse import urlencode
 
+try:
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import unquote
+
 from flask import Flask
 
 try:
@@ -33,8 +38,7 @@ except ImportError:
 
 from werkzeug.wrappers import BaseRequest
 
-
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 
 def make_environ(event):
@@ -52,6 +56,9 @@ def make_environ(event):
         environ[http_hdr_name] = hdr_value
 
     qs = event['queryStringParameters']
+
+    for k, v in qs.items():
+        qs[k] = unquote(v)
 
     environ['REQUEST_METHOD'] = event['httpMethod']
     environ['PATH_INFO'] = event['path']
