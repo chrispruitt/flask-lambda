@@ -2,6 +2,8 @@ rm -r build/
 rm -r dist/
 rm -r ./*.egg-info/
 
+source venv/bin/activate
+
 # build package
 python3 -m pip install --user --upgrade setuptools wheel
 python3 setup.py sdist bdist_wheel
@@ -17,3 +19,5 @@ echo "        git commit -m 'bump version'"
 echo "        git push"
 echo "        git tag ${VERSION}"
 echo "        git push --tags"
+
+deactivate

@@ -6,7 +6,7 @@ with open('README.rst') as f:
 
 setup(
     name='flask-lambda-python36-lb',
-    version='0.5.0',
+    version='0.6.0',
     description=('Python3.6+ module to make Flask compatible with AWS Gateway and AWS Load Balancer'),
     long_description=long_description,
     keywords='flask aws amazon lambda load balancer lb elb alb',
